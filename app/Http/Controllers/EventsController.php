@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
@@ -95,12 +96,15 @@ class EventsController extends BaseController
      */
 
     /**
+     * Get all events with workshops
+     *
      * @return JsonResponse
      * @throws \Exception
      *
      * @author Kshitij Verma <kshitij.verma1012@gmail.com>
      */
-    public function getEventsWithWorkshops() {
+    public function getEventsWithWorkshops(): JsonResponse
+    {
         try {
             $eventResponse = (new Event())->getEventsWorkShops();
             if (is_array($eventResponse)) {
@@ -222,6 +226,39 @@ class EventsController extends BaseController
         } catch (\Exception $e) {
 
             Log::error('Get future events with workshops exception: '. $e->getMessage(), [
+                'error_stack' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'errors' => $e->getMessage(),
+                'status' => 500
+            ]);
+        }
+    }
+
+    /**
+     * Get all events
+     *
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @author Kshitij Verma <kshitij.verma1012@gmail.com>
+     */
+    public function getAllEvents(): JsonResponse
+    {
+        try {
+            $eventResponse = (new Event())->getAllEvents();
+            if (is_array($eventResponse)) {
+                return response()->json($eventResponse);
+            }
+
+            return response()->json([
+                'errors' => "Events not found",
+                'status' => 404
+            ]);
+
+        } catch (\Exception $e) {
+
+            Log::error('Get warmup events exception: '. $e->getMessage(), [
                 'error_stack' => $e->getTraceAsString()
             ]);
             return response()->json([

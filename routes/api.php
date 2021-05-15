@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/warmupevents', 'EventsController@getAllEvents');
 Route::get('/events', 'EventsController@getEventsWithWorkshops');
 Route::get('/futureevents', 'EventsController@getEventsWithWorkshops');
 Route::get('/menu', 'MenuController@getEventsWithWorkshops');

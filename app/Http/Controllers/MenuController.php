@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 
 class MenuController extends BaseController
 {
+
+
     /*
     Requirements:
     - the eloquent expressions should result in EXACTLY one SQL query no matter the nesting level or the amount of menu items.

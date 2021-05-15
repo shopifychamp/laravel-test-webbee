@@ -10,6 +10,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Event extends Model
 {
     /**
+     * Get all events
+     *
+     * @return array
+     *
+     * @author Kshitij Verma <kshitijverma1012@gmail.com>
+     */
+    public function getAllEvents()
+    {
+        return Event::all()->toArray();
+    }
+
+    /**
      * Get events with workshops
      *
      * @return array
