@@ -6,8 +6,10 @@ use App\Models\Event;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 
 class EventsController extends BaseController
 {
@@ -96,8 +98,34 @@ class EventsController extends BaseController
     ]
      */
 
+    /**
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @author Kshitij Verma <kshitij.verma1012@gmail.com>
+     */
     public function getEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 1');
+        try {
+            $eventResponse = (new Event())->getEventsWorkShops();
+            if (is_array($eventResponse)) {
+                return response()->json($eventResponse);
+            }
+
+            return response()->json([
+                'errors' => "Events workshops not found",
+                'status' => 404
+            ]);
+
+        } catch (\Exception $e) {
+
+            Log::error('Get events with work shop exception: '. $e->getMessage(), [
+                'error_stack' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'errors' => $e->getMessage(),
+                'status' => 500
+            ]);
+        }
     }
 
 
