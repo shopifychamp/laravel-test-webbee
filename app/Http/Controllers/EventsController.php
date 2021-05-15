@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -204,6 +205,26 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 2');
+        try {
+            $eventResponse = (new Event())->getFutureEventsWithWorkshops();
+            if (is_array($eventResponse)) {
+                return response()->json($eventResponse);
+            }
+
+            return response()->json([
+                'errors' => "Future Events workshops not found",
+                'status' => 404
+            ]);
+
+        } catch (\Exception $e) {
+
+            Log::error('Get future events with workshops exception: '. $e->getMessage(), [
+                'error_stack' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'errors' => $e->getMessage(),
+                'status' => 500
+            ]);
+        }
     }
 }
