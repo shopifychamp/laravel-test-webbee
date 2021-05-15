@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
 class EventsController extends BaseController
@@ -204,7 +199,15 @@ class EventsController extends BaseController
     ```
      */
 
-    public function getFutureEventsWithWorkshops() {
+    /**
+     * Get future events with workshops
+     *
+     * @return JsonResponse
+     *
+     * @author Kshitij Verma <kshitijverma1012@gmail.com>
+     */
+    public function getFutureEventsWithWorkshops(): JsonResponse
+    {
         try {
             $eventResponse = (new Event())->getFutureEventsWithWorkshops();
             if (is_array($eventResponse)) {

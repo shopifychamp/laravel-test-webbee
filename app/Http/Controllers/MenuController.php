@@ -4,7 +4,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 
 class MenuController extends BaseController
 {
@@ -94,7 +97,35 @@ class MenuController extends BaseController
     ]
      */
 
-    public function getMenuItems() {
-        throw new \Exception('implement in coding task 3');
+    /**
+     * Task3: Get menu items with children menus(infinite level)
+     *
+     * @return JsonResponse
+     *
+     * @author Kshitij Verma <kshitijverma1012@gmail.com>
+     */
+    public function getMenuItems(): JsonResponse
+    {
+        try {
+            $eventResponse = (new MenuItem())->getMenuItems();
+            if (is_array($eventResponse)) {
+                return response()->json($eventResponse);
+            }
+
+            return response()->json([
+                'errors' => "Menu items not found",
+                'status' => 404
+            ]);
+
+        } catch (\Exception $e) {
+
+            Log::error('Get menu items exception: '. $e->getMessage(), [
+                'error_stack' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'errors' => $e->getMessage(),
+                'status' => 500
+            ]);
+        }
     }
 }
